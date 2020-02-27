@@ -15,17 +15,18 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 ''' In this code, I use D1 and D2 for two different diffusion
- coefficients.   ''' 
+ coefficients. All functions that use D1 in the solution are labeled by a 1 
+ in the variable name. Similarly, all functions that use D2 in the solution
+ are labeled by a 2 in the variable name.''' 
 
 ''' Define initial parameters of the problem - according to Q3 '''
 u = -0.1 #according to the problem instructions, this is the speed we should use.  
 D1 = .1 #diffusion coefficient 
 D2 = .5
 
-delx = 1 #spatial increment 
-delt = 1 #time increment 
+delx = 1 #spatial increment (the same for both runs)
+delt = 1 #time increment (the same for both runs)
 
-#Play around with the increments to see what works 
 
 jmax = 50 #length of array
 nmax = 500 #maximum number of time steps
@@ -46,7 +47,7 @@ axes[1].set_title('D Coeff =' + str(D2))
 '''Plot the first time steps: '''
 #initialize the array of numbers 
 f1 = np.copy(x)*1./jmax #each corresponds to different coef. 
-f2 = np.copy(x)*1./jmax
+f2 = np.copy(x)*1./jmax #normalized. 
 
 plt1, = axes[0].plot(x, f1, 'ro')
 plt2, = axes[1].plot(x, f2, 'bo')
@@ -57,7 +58,7 @@ for ax in axes:
 
 fig.canvas.draw()
 
-'''Evolving f1 and f2 according to the advection equation '''
+'''Evolving f1 and f2 according to the advection/difusion equation '''
 
 n = 0 #will label the time steps 
 
@@ -88,7 +89,7 @@ for n in range (0,nmax):
     f1 = np.linalg.solve(A1,f1)
     f2 = np.linalg.solve(A2,f2)
     
-    #then update the grid with the advection term (from Q3)
+    #then update the grid with the advection term (taken from Q3)
     f1[1:jmax-1] = (0.5)*(f1[2:] + f1[:jmax-2]) - (u*delt/(2*delx)) *(f1[2:] - f1[:jmax-2])
     f2[1:jmax-1] = (0.5)*(f2[2:] + f2[:jmax-2]) - (u*delt/(2*delx)) *(f2[2:] - f2[:jmax-2])
     
